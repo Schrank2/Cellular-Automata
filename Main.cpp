@@ -1,0 +1,23 @@
+#include <iostream>
+#include <SDL3/SDL.h>
+#include "functions.h"
+#include "defs.h"
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+	if (SDL_Init( SDL_INIT_VIDEO or SDL_INIT_AUDIO ) < 0)
+	{
+		cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
+	}
+	else
+	{
+		cout << "SDL initialization succeeded!";
+	}
+	window = SDL_CreateWindow("CELLULAR AUTOMATA", ScreenWidth, ScreenHeight, SDL_WINDOW_OPENGL);
+	renderer = SDL_CreateRenderer(window,NULL);
+	game();
+	cin.get();
+	return 0;
+}
+
