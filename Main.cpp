@@ -4,6 +4,11 @@
 #include "defs.h"
 using namespace std;
 
+int ScreenHeight = 720;
+int ScreenWidth = 1280;
+SDL_Window* window;
+SDL_Renderer* renderer;
+
 int main(int argc, char* argv[])
 {
 	if (SDL_Init( SDL_INIT_VIDEO or SDL_INIT_AUDIO ) < 0)
