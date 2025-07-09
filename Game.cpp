@@ -5,9 +5,12 @@
 using namespace std;
 
 int game() {
-	render();
 	SDL_Event event;
+	int StartTime = SDL_GetTicks();
+	int CurrentTime = SDL_GetTicks() - StartTime;
 	while (1) {
+		CurrentTime = SDL_GetTicks()-StartTime;
+		render();
 		if (SDL_PollEvent(&event) && event.type == SDL_EVENT_QUIT)
 			break;
 	}
