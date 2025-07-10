@@ -1,6 +1,7 @@
+#include <vector>
 int main(int argc, char* argv[]);
 int game();
-void render();
+void render(const std::vector<std::vector<int>>& GameMap);
 int ScreenCoordinateX(int x, int z);
 int ScreenCoordinateY(int y, int z);
 float VectorLength(float x, float y);

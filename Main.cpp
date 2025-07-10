@@ -4,8 +4,8 @@
 #include "defs.h"
 using namespace std;
 
-int ScreenHeight = 720;
-int ScreenWidth = 1280;
+int ScreenHeight = 900;
+int ScreenWidth = 1600;
 SDL_Window* window;
 SDL_Renderer* renderer;
 
