@@ -13,8 +13,9 @@ int CameraY = 0;
 int CameraZ = 0;
 int neighbors = 0;
 int survive = 0;
-vector<vector<int>> GameMap(ScreenWidth, vector<int>(ScreenHeight));
-vector<vector<int>> GameMapNext(ScreenWidth, vector<int>(ScreenHeight));
+int GameScale = 4;
+vector<vector<int>> GameMap(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
+vector<vector<int>> GameMapNext(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
 
 int game() {
 	SDL_Event event;
@@ -23,9 +24,9 @@ int game() {
 	int CurrentTime = SDL_GetTicks() - StartTime;
 	int LastTime = CurrentTime;
 	// Filling the Game Map with random values
-	for (int i = 0; i < ScreenWidth; i++) {
-		for (int j = 0; j < ScreenHeight; j++) {
-			if (rand() % 2 == 0) {
+	for (int i = 0; i < GameMap.size(); i++) {
+		for (int j = 0; j < GameMap[0].size(); j++) {
+			if (rand() % 10 > 1) {
 				GameMap[i][j] = 1;
 			}
 			else {
@@ -40,14 +41,14 @@ int game() {
 			LastTime = CurrentTime;
 
 			// Cellular Automata do stuff now
-			for (int i = 0; i < ScreenWidth; i++) {
-				for (int j = 0; j < ScreenHeight; j++) {
+			for (int i = 0; i < GameMap.size(); i++) {
+				for (int j = 0; j < GameMap[0].size(); j++) {
 					survive = 0; neighbors = 0;
 					if (GameMap[i][j] == 1) { survive = 1; }
 					// Determine Neighbors
-					if (i + 1 < ScreenWidth && GameMap[i + 1][j] == 1) { neighbors++; }
+					if (i + 1 < GameMap.size() && GameMap[i + 1][j] == 1) { neighbors++; }
 					if (i - 1 >= 0 && GameMap[i - 1][j] == 1) { neighbors++; }
-					if (j + 1 < ScreenHeight && GameMap[i][j + 1] == 1) { neighbors++; }
+					if (j + 1 < GameMap[0].size() && GameMap[i][j + 1] == 1) { neighbors++; }
 					if (j - 1 >= 0 && GameMap[i][j - 1] == 1) { neighbors++; }
 					if (neighbors < 2) { survive = 0; }// Underpopulation
 					if (neighbors > 3) { survive = 0; }// Overpopulation

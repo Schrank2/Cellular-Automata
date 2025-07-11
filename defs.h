@@ -10,6 +10,7 @@ extern int Toggle;
 extern int CameraX;
 extern int CameraY;
 extern int CameraZ;
+extern int GameScale;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern SDL_Event event;
