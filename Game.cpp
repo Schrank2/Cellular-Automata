@@ -13,8 +13,12 @@ int CameraY = 0;
 int CameraZ = 0;
 int neighbors = 0;
 int survive = 0;
-int GameScale = 1;
-int TickTime = 1000;
+int GameScale = 32;
+int GameTemp = 0;
+int TickTime = 100;
+int Pause = 0;
+float mouseX, mouseY;
+int mouseXgame, mouseYgame;
 vector<vector<int>> GameMap(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
 vector<vector<int>> GameMapNext(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
 
@@ -37,10 +41,9 @@ int game() {
 	}
 	// The Game Loop
 	while (1) {
-		CurrentTime = SDL_GetTicks()-StartTime;
-		if (LastTime = CurrentTime + TickTime) {
+		CurrentTime = SDL_GetTicks() - StartTime;
+		if (CurrentTime - LastTime >= TickTime && Pause == 0) {
 			LastTime = CurrentTime;
-
 			// Cellular Automata do stuff now
 			for (int i = 0; i < GameMap.size(); i++) {
 				for (int j = 0; j < GameMap[0].size(); j++) {
@@ -49,12 +52,12 @@ int game() {
 					// Determine Neighbors
 					//i+1
 					if (i + 1 < GameMap.size() && GameMap[i + 1][j] == 1) { neighbors++; } // ABOVE
-					if (i + 1 < GameMap.size() && j + 1 < GameMap[0].size() && GameMap[i + 1][j+1] == 1) { neighbors++; } // ABOVE, RIGHT
-					if (i + 1 < GameMap.size() && j - 1 >= 0 && GameMap[i + 1][j-1] == 1) { neighbors++; } // ABOVE, LEFT
+					if (i + 1 < GameMap.size() && j + 1 < GameMap[0].size() && GameMap[i + 1][j + 1] == 1) { neighbors++; } // ABOVE, RIGHT
+					if (i + 1 < GameMap.size() && j - 1 >= 0 && GameMap[i + 1][j - 1] == 1) { neighbors++; } // ABOVE, LEFT
 					// i
 					if (i - 1 >= 0 && GameMap[i - 1][j] == 1) { neighbors++; } // BELOW
-					if (i - 1 >= 0 && j + 1 < GameMap[0].size() && GameMap[i - 1][j+1] == 1) { neighbors++; } // BELOW,RIGHT
-					if (i - 1 >= 0 && j - 1 >= 0 && GameMap[i - 1][j-1] == 1) { neighbors++; } // BELOW,LEFT
+					if (i - 1 >= 0 && j + 1 < GameMap[0].size() && GameMap[i - 1][j + 1] == 1) { neighbors++; } // BELOW,RIGHT
+					if (i - 1 >= 0 && j - 1 >= 0 && GameMap[i - 1][j - 1] == 1) { neighbors++; } // BELOW,LEFT
 
 					if (j + 1 < GameMap[0].size() && GameMap[i][j + 1] == 1) { neighbors++; } // RIGHT
 					if (j - 1 >= 0 && GameMap[i][j - 1] == 1) { neighbors++; } // LEFT
@@ -74,8 +77,24 @@ int game() {
 			GameMap = GameMapNext;
 		}
 		render(GameMap);
+		SDL_GetMouseState(&mouseX, &mouseY); // Check mouse position
+		cout << "\r" << string(50, ' ') << "\r" << "Mouse X: " << mouseX << ", Mouse Y: " << mouseY;
 		if (SDL_PollEvent(&event) && event.type == SDL_EVENT_QUIT)
 			break;
+		if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+			if (event.button.button == SDL_BUTTON_LEFT) {
+				mouseXgame = mouseX / GameScale;
+				mouseYgame = mouseY / GameScale;
+				if (GameMap[mouseXgame][mouseYgame] == 1) { GameTemp = 0; }
+				if (GameMap[mouseXgame][mouseYgame] == 0) { GameTemp = 1; }
+				GameMap[mouseXgame][mouseYgame] = GameTemp;
+			}
+		}
+		if (event.type == SDL_EVENT_KEY_DOWN) {
+			if (event.key.key == SDLK_SPACE) {
+				Pause = !Pause;
+			}
+		}
 	}
 	// Cleanup
 	return 0;

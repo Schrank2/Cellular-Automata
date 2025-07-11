@@ -11,13 +11,13 @@ SDL_Renderer* renderer;
 
 int main(int argc, char* argv[])
 {
-	if (SDL_Init( SDL_INIT_VIDEO or SDL_INIT_AUDIO ) < 0)
+	if (SDL_Init( SDL_INIT_VIDEO or SDL_INIT_AUDIO) < 0)
 	{
 		cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
 	}
 	else
 	{
-		cout << "SDL initialization succeeded!";
+		cout << "SDL initialization succeeded! \n";
 	}
 	window = SDL_CreateWindow("CELLULAR AUTOMATA", ScreenWidth, ScreenHeight, SDL_WINDOW_OPENGL);
 	renderer = SDL_CreateRenderer(window,NULL);
