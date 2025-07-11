@@ -13,7 +13,8 @@ int CameraY = 0;
 int CameraZ = 0;
 int neighbors = 0;
 int survive = 0;
-int GameScale = 4;
+int GameScale = 1;
+int TickTime = 1000;
 vector<vector<int>> GameMap(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
 vector<vector<int>> GameMapNext(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
 
@@ -37,7 +38,7 @@ int game() {
 	// The Game Loop
 	while (1) {
 		CurrentTime = SDL_GetTicks()-StartTime;
-		if (LastTime = CurrentTime + 100) {
+		if (LastTime = CurrentTime + TickTime) {
 			LastTime = CurrentTime;
 
 			// Cellular Automata do stuff now
@@ -46,10 +47,18 @@ int game() {
 					survive = 0; neighbors = 0;
 					if (GameMap[i][j] == 1) { survive = 1; }
 					// Determine Neighbors
-					if (i + 1 < GameMap.size() && GameMap[i + 1][j] == 1) { neighbors++; }
-					if (i - 1 >= 0 && GameMap[i - 1][j] == 1) { neighbors++; }
-					if (j + 1 < GameMap[0].size() && GameMap[i][j + 1] == 1) { neighbors++; }
-					if (j - 1 >= 0 && GameMap[i][j - 1] == 1) { neighbors++; }
+					//i+1
+					if (i + 1 < GameMap.size() && GameMap[i + 1][j] == 1) { neighbors++; } // ABOVE
+					if (i + 1 < GameMap.size() && j + 1 < GameMap[0].size() && GameMap[i + 1][j+1] == 1) { neighbors++; } // ABOVE, RIGHT
+					if (i + 1 < GameMap.size() && j - 1 >= 0 && GameMap[i + 1][j-1] == 1) { neighbors++; } // ABOVE, LEFT
+					// i
+					if (i - 1 >= 0 && GameMap[i - 1][j] == 1) { neighbors++; } // BELOW
+					if (i - 1 >= 0 && j + 1 < GameMap[0].size() && GameMap[i - 1][j+1] == 1) { neighbors++; } // BELOW,RIGHT
+					if (i - 1 >= 0 && j - 1 >= 0 && GameMap[i - 1][j-1] == 1) { neighbors++; } // BELOW,LEFT
+
+					if (j + 1 < GameMap[0].size() && GameMap[i][j + 1] == 1) { neighbors++; } // RIGHT
+					if (j - 1 >= 0 && GameMap[i][j - 1] == 1) { neighbors++; } // LEFT
+
 					if (neighbors < 2) { survive = 0; }// Underpopulation
 					if (neighbors > 3) { survive = 0; }// Overpopulation
 					if (neighbors == 3) { survive = 1; } // Reproduction
