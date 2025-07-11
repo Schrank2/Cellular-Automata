@@ -13,7 +13,10 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 	for (int i=0; i < GameMap.size(); i++) {
 		for (int j = 0; j < GameMap[0].size(); j++) {
 			if (GameMap[i][j] == 1) {
-				SDL_RenderPoint(renderer, i, j);
+				for (int l=0;l<=GameScale;l++){ 
+					for (int m=0; m<=GameScale;m++)
+					SDL_RenderPoint(renderer, i * GameScale+l , j * GameScale+m); 
+				}
 			}
 		}
 	}
