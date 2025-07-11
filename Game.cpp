@@ -13,14 +13,18 @@ int CameraY = 0;
 int CameraZ = 0;
 int neighbors = 0;
 int survive = 0;
-int GameScale = 32;
+int GameScale = 12;
+float mapDensity = 5.0f; // Percentage of cells that are alive at the start
 int GameTemp = 0;
-int TickTime = 100;
+int TickTime = 0;
 int Pause = 0;
 float mouseX, mouseY;
 int mouseXgame, mouseYgame;
-vector<vector<int>> GameMap(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
-vector<vector<int>> GameMapNext(ScreenWidth/GameScale, vector<int>(ScreenHeight/GameScale));
+int GameWidth = ScreenWidth / GameScale;
+int GameHeight = ScreenHeight / GameScale;
+vector<vector<int>> GameMap(GameWidth, vector<int>(GameHeight));
+vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
+
 
 int game() {
 	SDL_Event event;
@@ -29,9 +33,9 @@ int game() {
 	int CurrentTime = SDL_GetTicks() - StartTime;
 	int LastTime = CurrentTime;
 	// Filling the Game Map with random values
-	for (int i = 0; i < GameMap.size(); i++) {
-		for (int j = 0; j < GameMap[0].size(); j++) {
-			if (rand() % 10 > 1) {
+	for (int i = 0; i < GameWidth; i++) {
+		for (int j = 0; j < GameHeight; j++) {
+			if (rand() % 10 > mapDensity) {
 				GameMap[i][j] = 1;
 			}
 			else {
@@ -45,21 +49,21 @@ int game() {
 		if (CurrentTime - LastTime >= TickTime && Pause == 0) {
 			LastTime = CurrentTime;
 			// Cellular Automata do stuff now
-			for (int i = 0; i < GameMap.size(); i++) {
-				for (int j = 0; j < GameMap[0].size(); j++) {
+			for (int i = 0; i < GameWidth; i++) {
+				for (int j = 0; j < GameHeight; j++) {
 					survive = 0; neighbors = 0;
 					if (GameMap[i][j] == 1) { survive = 1; }
 					// Determine Neighbors
 					//i+1
-					if (i + 1 < GameMap.size() && GameMap[i + 1][j] == 1) { neighbors++; } // ABOVE
-					if (i + 1 < GameMap.size() && j + 1 < GameMap[0].size() && GameMap[i + 1][j + 1] == 1) { neighbors++; } // ABOVE, RIGHT
-					if (i + 1 < GameMap.size() && j - 1 >= 0 && GameMap[i + 1][j - 1] == 1) { neighbors++; } // ABOVE, LEFT
+					if (i + 1 < GameWidth && GameMap[i + 1][j] == 1) { neighbors++; } // ABOVE
+					if (i + 1 < GameWidth && j + 1 < GameHeight && GameMap[i + 1][j + 1] == 1) { neighbors++; } // ABOVE, RIGHT
+					if (i + 1 < GameWidth && j - 1 >= 0 && GameMap[i + 1][j - 1] == 1) { neighbors++; } // ABOVE, LEFT
 					// i
 					if (i - 1 >= 0 && GameMap[i - 1][j] == 1) { neighbors++; } // BELOW
-					if (i - 1 >= 0 && j + 1 < GameMap[0].size() && GameMap[i - 1][j + 1] == 1) { neighbors++; } // BELOW,RIGHT
+					if (i - 1 >= 0 && j + 1 < GameHeight && GameMap[i - 1][j + 1] == 1) { neighbors++; } // BELOW,RIGHT
 					if (i - 1 >= 0 && j - 1 >= 0 && GameMap[i - 1][j - 1] == 1) { neighbors++; } // BELOW,LEFT
 
-					if (j + 1 < GameMap[0].size() && GameMap[i][j + 1] == 1) { neighbors++; } // RIGHT
+					if (j + 1 < GameHeight && GameMap[i][j + 1] == 1) { neighbors++; } // RIGHT
 					if (j - 1 >= 0 && GameMap[i][j - 1] == 1) { neighbors++; } // LEFT
 
 					if (neighbors < 2) { survive = 0; }// Underpopulation
@@ -74,11 +78,10 @@ int game() {
 				}
 			}
 			// Apply Changes
-			GameMap = GameMapNext;
+			swap(GameMap, GameMapNext); // Basically GameMap = GameMapNext; but Copilot says it's faster lol
 		}
 		render(GameMap);
 		SDL_GetMouseState(&mouseX, &mouseY); // Check mouse position
-		cout << "\r" << string(50, ' ') << "\r" << "Mouse X: " << mouseX << ", Mouse Y: " << mouseY;
 		if (SDL_PollEvent(&event) && event.type == SDL_EVENT_QUIT)
 			break;
 		if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
