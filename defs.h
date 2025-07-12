@@ -15,6 +15,7 @@ extern int GameWidth;
 extern int GameHeight;
 extern float ThreadUsage;
 extern int ThreadCount;
+extern int ThreadCountUsed;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern SDL_Event event;

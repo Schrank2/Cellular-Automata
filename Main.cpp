@@ -4,11 +4,11 @@
 #include "defs.h"
 #include <thread>
 using namespace std;
-
 int ScreenHeight = 900;
 int ScreenWidth = 1600;
 float ThreadUsage = 0.5f; // Percentage of threads used
 int ThreadCount = thread::hardware_concurrency();
+int ThreadCountUsed = ThreadCount * ThreadUsage; // Number of threads used
 SDL_Window* window;
 SDL_Renderer* renderer;
 
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	}
 	window = SDL_CreateWindow("CELLULAR AUTOMATA", ScreenWidth, ScreenHeight, SDL_WINDOW_OPENGL);
 	renderer = SDL_CreateRenderer(window, nullptr);;
-	cout << "Available Threads: " << ThreadCount << "   Using " << ThreadCount*ThreadUsage << " Threads" << endl;
+	cout << "Available Threads: " << ThreadCount << "   Using " << ThreadCountUsed << " Threads" << endl;
 	game();
 	cin.get();
 	return 0;

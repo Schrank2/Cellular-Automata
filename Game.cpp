@@ -29,6 +29,7 @@ const int neighborOffsets[8][2] = {
 };
 vector<vector<int>> GameMap(GameWidth, vector<int>(GameHeight));
 vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
+vector<thread> threads;
 static void CellularAutomataRules(int txMin,int txMax,int tyMin, int tyMax) {
 	// Cellular Automata do stuff now
 	int survive; int neighbors;
@@ -89,14 +90,13 @@ int game() {
 			for (auto& row : GameMapNext)
 				fill(row.begin(), row.end(), 0);
 			// Cellular Automata Logic
-			thread thread1(CellularAutomataRules, 0, GameWidth * 0.5, 0, GameHeight * 0.5);
-			thread thread2(CellularAutomataRules, GameWidth * 0.5, GameWidth, 0, GameHeight * 0.5);
-			thread thread3(CellularAutomataRules, 0, GameWidth * 0.5, GameHeight * 0.5, GameHeight);
-			thread thread4(CellularAutomataRules, GameWidth * 0.5, GameWidth, GameHeight * 0.5, GameHeight);
-			thread1.join();
-			thread2.join();
-			thread3.join();
-			thread4.join();
+			int rowLength = GameHeight / ThreadCountUsed;
+			for (int i = 0; i < ThreadCountUsed; i++) {
+				int yMin = i * rowLength;
+				int yMax = (i + 1) * rowLength;
+				threads.emplace_back(CellularAutomataRules, 0, GameWidth, yMin, yMax);
+			}
+			for (auto& th : threads) { th.join(); };
 			// Apply Changes
 			swap(GameMap, GameMapNext); // Basically GameMap = GameMapNext; but Copilot says it's faster lol
 		}
