@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "defs.h"
 #include "functions.h"
+#include <thread>
 using namespace std;
 SDL_Texture* cellTexture;
 int StartTime;
@@ -17,7 +18,7 @@ int survive = 0;
 int GameScale = 2;
 float mapDensity = 5.0f; // Percentage of cells that are alive at the start
 int GameTemp = 0;
-int TickTime = 2000;
+int TickTime = 0;
 int Pause = 0;
 float mouseX, mouseY;
 int mouseXgame, mouseYgame;
@@ -89,10 +90,14 @@ int game() {
 			for (auto& row : GameMapNext)
 				fill(row.begin(), row.end(), 0);
 			// Cellular Automata Logic
-			CellularAutomataRules(0,GameWidth * 0.5, 0, GameHeight * 0.5);
-			CellularAutomataRules(GameWidth*0.5, GameWidth, 0, GameHeight*0.5);
-			CellularAutomataRules(0, GameWidth*0.5, GameHeight*0.5, GameHeight);
-			CellularAutomataRules(GameWidth*0.5, GameWidth, GameHeight * 0.5, GameHeight);
+			thread thread1(CellularAutomataRules, 0, GameWidth * 0.5, 0, GameHeight * 0.5);
+			thread thread2(CellularAutomataRules, GameWidth * 0.5, GameWidth, 0, GameHeight * 0.5);
+			thread thread3(CellularAutomataRules, 0, GameWidth * 0.5, GameHeight * 0.5, GameHeight);
+			thread thread4(CellularAutomataRules, GameWidth * 0.5, GameWidth, GameHeight * 0.5, GameHeight);
+			thread1.join();
+			thread2.join();
+			thread3.join();
+			thread4.join();
 			// Apply Changes
 			swap(GameMap, GameMapNext); // Basically GameMap = GameMapNext; but Copilot says it's faster lol
 		}
