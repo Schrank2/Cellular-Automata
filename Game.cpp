@@ -17,7 +17,7 @@ int survive = 0;
 int GameScale = 2;
 float mapDensity = 5.0f; // Percentage of cells that are alive at the start
 int GameTemp = 0;
-int TickTime = 0;
+int TickTime = 2000;
 int Pause = 0;
 float mouseX, mouseY;
 int mouseXgame, mouseYgame;
@@ -33,7 +33,7 @@ vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
 static void CellularAutomataRules(int txMin,int txMax,int tyMin, int tyMax) {
 	// Cellular Automata do stuff now
 	for (int i = txMin; i < txMax; i++) {
-		for (int j = txMax; j < tyMin; j++) {
+		for (int j = tyMin; j < tyMax; j++) {
 			survive = 0; neighbors = 0;
 			if (GameMap[i][j] == 1) { survive = 1; }
 			// Determine Neighbors
@@ -85,8 +85,14 @@ int game() {
 		CurrentTime = SDL_GetTicks() - StartTime;
 		if (CurrentTime - LastTime >= TickTime && Pause == 0) {
 			LastTime = CurrentTime;
+			// emptying GameMapNext
+			for (auto& row : GameMapNext)
+				fill(row.begin(), row.end(), 0);
 			// Cellular Automata Logic
 			CellularAutomataRules(0,GameWidth * 0.5, 0, GameHeight * 0.5);
+			CellularAutomataRules(GameWidth*0.5, GameWidth, 0, GameHeight*0.5);
+			CellularAutomataRules(0, GameWidth*0.5, GameHeight*0.5, GameHeight);
+			CellularAutomataRules(GameWidth*0.5, GameWidth, GameHeight * 0.5, GameHeight);
 			// Apply Changes
 			swap(GameMap, GameMapNext); // Basically GameMap = GameMapNext; but Copilot says it's faster lol
 		}
