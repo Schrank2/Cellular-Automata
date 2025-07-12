@@ -9,7 +9,7 @@ using namespace std;
 int Toggle=0;
 float temp = 0;
 vector<thread> RenderThreads;
-vector<SDL_FRect> RenderRects;
+vector<vector<SDL_FRect>> RenderRects(ThreadCountUsed);
 
 SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 	// Setup the Texture
@@ -45,16 +45,16 @@ SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 	return Texture;
 }
 
-static void renderThreaded(const std::vector<std::vector<int>>& GameMap,int txMin, int txMax, int tyMin, int tyMax) {
+static void renderThreaded(int Thread,const std::vector<std::vector<int>>& GameMap,int txMin, int txMax, int tyMin, int tyMax) {
 	SDL_FRect rect;
+	mutex lock;
 	for (int i = txMin; i < txMax; i++) {
 		for (int j = tyMin; j < tyMax; j++) {
-			mutex lock;
 			if (GameMap[i][j] == 1) {
 				// Drawing the Texture onto the screen
 				rect = { static_cast<float>(i * GameScale), static_cast<float>(j * GameScale), static_cast<float>(GameScale), static_cast<float>(GameScale)};
 				lock.lock(); // Used to avoid Deadlock Issue
-				RenderRects.push_back(rect);
+				RenderRects[Thread].push_back(rect);
 				lock.unlock();
 			}
 		}
@@ -71,15 +71,20 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	// Rendering Multithreaded
 	RenderThreads.clear();
+	for (auto& rects : RenderRects) { // clear old rectangles
+		rects.clear();
+	}
 	int rowLength = GameHeight / ThreadCountUsed;
 	for (int i = 0; i < ThreadCountUsed; i++) {
 		int yMin = i * rowLength;
 		int yMax = (i + 1) * rowLength;
-		RenderThreads.emplace_back(renderThreaded, GameMap, 0, GameWidth,yMin, yMax);
+		RenderThreads.emplace_back(renderThreaded, i,GameMap, 0, GameWidth,yMin, yMax);
 	}
 	for (auto& th : RenderThreads) { th.join(); }; // Wait for the Rectangles to be calculated
-	for (int i=0; i<=RenderRects.size(); i++){ // Draw the Textures into the Rectangles
-		SDL_RenderTexture(renderer, cellTexture, nullptr, &RenderRects[i]);
+	for (int j = 0; j < ThreadCountUsed; j++) { // Draw the Textures into the Rectangles
+		for (int i = 0; i < RenderRects[j].size(); i++) { 
+			SDL_RenderTexture(renderer, cellTexture, nullptr, &RenderRects[j][i]);
+		}
 	}
 	SDL_RenderPresent(renderer);
 }
