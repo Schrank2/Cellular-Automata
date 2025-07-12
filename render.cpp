@@ -4,10 +4,12 @@
 #include <thread>
 #include "defs.h"
 #include "functions.h"
+#include <mutex>
 using namespace std;
 int Toggle=0;
 float temp = 0;
 vector<thread> RenderThreads;
+vector<SDL_FRect> RenderRects;
 
 SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 	// Setup the Texture
@@ -47,10 +49,13 @@ static void renderThreaded(const std::vector<std::vector<int>>& GameMap,int txMi
 	SDL_FRect rect;
 	for (int i = txMin; i < txMax; i++) {
 		for (int j = tyMin; j < tyMax; j++) {
+			mutex lock;
 			if (GameMap[i][j] == 1) {
 				// Drawing the Texture onto the screen
-				rect = { static_cast<float>(i * GameScale), static_cast<float>(j * GameScale), static_cast<float>(GameScale), static_cast<float>(GameScale) };
-				SDL_RenderTexture(renderer, cellTexture, nullptr, &rect);
+				rect = { static_cast<float>(i * GameScale), static_cast<float>(j * GameScale), static_cast<float>(GameScale), static_cast<float>(GameScale)};
+				lock.lock(); // Used to avoid Deadlock Issue
+				RenderRects.push_back(rect);
+				lock.unlock();
 			}
 		}
 	}
@@ -72,6 +77,9 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 		int yMax = (i + 1) * rowLength;
 		RenderThreads.emplace_back(renderThreaded, GameMap, 0, GameWidth,yMin, yMax);
 	}
-	for (auto& th : RenderThreads) { th.join(); };
+	for (auto& th : RenderThreads) { th.join(); }; // Wait for the Rectangles to be calculated
+	for (int i=0; i<=RenderRects.size(); i++){ // Draw the Textures into the Rectangles
+		SDL_RenderTexture(renderer, cellTexture, nullptr, &RenderRects[i]);
+	}
 	SDL_RenderPresent(renderer);
 }
