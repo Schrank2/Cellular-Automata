@@ -56,7 +56,6 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 				// Drawing the Texture onto the screen
 				rect = { static_cast<float>(i*GameScale), static_cast<float>(j*GameScale), static_cast<float>(GameScale), static_cast<float>(GameScale)};
 				SDL_RenderTexture(renderer, cellTexture, nullptr, &rect);
-				cout << "Drawing cell at: " << i << "," << j << " rect: " << rect.x << "," << rect.y << "," << rect.w << "," << rect.h << endl;
 			}
 		}
 	}

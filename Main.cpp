@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 		cout << "SDL initialization succeeded! \n";
 	}
 	window = SDL_CreateWindow("CELLULAR AUTOMATA", ScreenWidth, ScreenHeight, SDL_WINDOW_OPENGL);
-	renderer = SDL_CreateRenderer(window,NULL);
+	renderer = SDL_CreateRenderer(window, nullptr);;
 	game();
 	cin.get();
 	return 0;
