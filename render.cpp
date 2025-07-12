@@ -28,6 +28,7 @@ SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 	// Clear the texture
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
+	// Draw the texture
 	for (int l = 0; l < GameScale; l++) {
 		for (int m = 0; m < GameScale; m++) {
 			temp = 100 + (40.0f * m / GameScale) + (40.0f * l / GameScale);
@@ -41,6 +42,10 @@ SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 }
 
 void render(const std::vector<std::vector<int>>& GameMap) {
+	if (!cellTexture) { // Check if cellTexture is there
+		std::cerr << "cellTexture is null!" << std::endl;
+		return;
+	}
 	SDL_FRect rect;
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer); // Clear the screen with white color
@@ -48,8 +53,10 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 	for (int i=0; i < GameWidth; i++) {
 		for (int j = 0; j < GameHeight; j++) {
 			if (GameMap[i][j] == 1) { 
+				// Drawing the Texture onto the screen
 				rect = { static_cast<float>(i*GameScale), static_cast<float>(j*GameScale), static_cast<float>(GameScale), static_cast<float>(GameScale)};
 				SDL_RenderTexture(renderer, cellTexture, nullptr, &rect);
+				cout << "Drawing cell at: " << i << "," << j << " rect: " << rect.x << "," << rect.y << "," << rect.w << "," << rect.h << endl;
 			}
 		}
 	}
