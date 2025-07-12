@@ -6,21 +6,48 @@
 using namespace std;
 int Toggle=0;
 int temp = 0;
+const SDL_FRect* rect[4];
+
+SDL_Texture* genCellTexture() { // Lots of Help from Copilot
+	// Setup the Texture
+	SDL_Texture* cellTexture = SDL_CreateTexture(
+		renderer,
+		SDL_PIXELFORMAT_RGBA32,
+		SDL_TEXTUREACCESS_TARGET,
+		GameScale + 1,
+		GameScale + 1
+	);
+	// Check if successful
+	if (!cellTexture) {
+		std::cerr << "Failed to create cell texture: " << SDL_GetError() << std::endl;
+		return nullptr;
+	}
+	// Save current render target
+	SDL_Texture* prevTarget = SDL_GetRenderTarget(renderer);
+	// Clear the texture
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderClear(renderer);
+	for (int l = 0; l <= GameScale; l++) {
+		for (int m = 0; m <= GameScale; m++) {
+			temp = 100 + (40 * m / GameScale) + (40 * l / GameScale);
+			SDL_SetRenderDrawColor(renderer, 0, temp, 0, 255);
+			SDL_RenderPoint(renderer, l, m);
+		}
+	}
+	// Reset render target
+	SDL_SetRenderTarget(renderer, prevTarget);
+	return cellTexture;
+}
 
 void render(const std::vector<std::vector<int>>& GameMap) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer); // Clear the screen with white color
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	for (int i=0; i < GameMap.size(); i++) {
-		for (int j = 0; j < GameMap[0].size(); j++) {
-			if (GameMap[i][j] == 1) {
-				for (int l=0;l<=GameScale;l++){ 
-					for (int m = 0; m <= GameScale; m++) {
-						temp = 100+(40*m/GameScale)+ (40 * l / GameScale);
-						SDL_SetRenderDrawColor(renderer, 0, temp, 0, 255);
-						SDL_RenderPoint(renderer, i * GameScale + l, j * GameScale + m);
-					}
-				}
+	for (int i=0; i < GameWidth; i++) {
+		for (int j = 0; j < GameHeight; j++) {
+			if (GameMap[i][j] == 1) { 
+				rect[4] = {static_cast<float>(i), static_cast<float>(j), static_cast<float>(GameWidth), static_cast<float>(GameHeight)};
+				SDL_RenderTexture(renderer, cellTexture, nullptr, rect);
 			}
 		}
 	}

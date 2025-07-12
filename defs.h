@@ -11,7 +11,10 @@ extern int CameraX;
 extern int CameraY;
 extern int CameraZ;
 extern int GameScale;
+extern int GameWidth;
+extern int GameHeight;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern SDL_Event event;
+extern SDL_Texture* cellTexture;
 #endif

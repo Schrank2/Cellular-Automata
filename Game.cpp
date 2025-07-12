@@ -13,7 +13,7 @@ int CameraY = 0;
 int CameraZ = 0;
 int neighbors = 0;
 int survive = 0;
-int GameScale = 12;
+int GameScale = 4;
 float mapDensity = 5.0f; // Percentage of cells that are alive at the start
 int GameTemp = 0;
 int TickTime = 0;
@@ -43,6 +43,8 @@ int game() {
 			}
 		}
 	}
+	// Generating the Textures
+	SDL_Texture* cellTexture=genCellTexture();
 	// The Game Loop
 	while (1) {
 		CurrentTime = SDL_GetTicks() - StartTime;
