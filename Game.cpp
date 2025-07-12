@@ -45,7 +45,7 @@ int game() {
 		}
 	}
 	// Generating the Textures
-	SDL_Texture* cellTexture=genCellTexture();
+	cellTexture=genCellTexture();
 	// The Game Loop
 	while (1) {
 		CurrentTime = SDL_GetTicks() - StartTime;
