@@ -30,6 +30,35 @@ const int neighborOffsets[8][2] = {
 };
 vector<vector<int>> GameMap(GameWidth, vector<int>(GameHeight));
 vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
+static void CellularAutomataRules() {
+	// Cellular Automata do stuff now
+	for (int i = 0; i < GameWidth; i++) {
+		for (int j = 0; j < GameHeight; j++) {
+			survive = 0; neighbors = 0;
+			if (GameMap[i][j] == 1) { survive = 1; }
+			// Determine Neighbors
+			for (int k = 0; k < 8; k++) {
+				int ni = i + neighborOffsets[k][0];
+				int nj = j + neighborOffsets[k][1];
+				if (ni >= 0 && ni < GameWidth && nj >= 0 && nj < GameHeight) {
+					if (GameMap[ni][nj] == 1) {
+						neighbors++;
+					}
+				}
+			}
+			if (neighbors < 2) { survive = 0; }// Underpopulation
+			if (neighbors > 3) { survive = 0; }// Overpopulation
+			if (neighbors == 3) { survive = 1; } // Reproduction
+			if (survive == 1) {
+				GameMapNext[i][j] = 1; // Cell survives
+			}
+			else {
+				GameMapNext[i][j] = 0; // Cell dies
+			}
+		}
+	}
+}
+
 
 
 int game() {
@@ -56,32 +85,8 @@ int game() {
 		CurrentTime = SDL_GetTicks() - StartTime;
 		if (CurrentTime - LastTime >= TickTime && Pause == 0) {
 			LastTime = CurrentTime;
-			// Cellular Automata do stuff now
-			for (int i = 0; i < GameWidth; i++) {
-				for (int j = 0; j < GameHeight; j++) {
-					survive = 0; neighbors = 0;
-					if (GameMap[i][j] == 1) { survive = 1; }
-					// Determine Neighbors
-					for (int k = 0; k < 8; k++) {
-						int ni = i + neighborOffsets[k][0];
-						int nj = j + neighborOffsets[k][1];
-						if (ni >= 0 && ni < GameWidth && nj >= 0 && nj < GameHeight) {
-							if (GameMap[ni][nj] == 1) {
-								neighbors++;
-							}
-						}
-					}
-					if (neighbors < 2) { survive = 0; }// Underpopulation
-					if (neighbors > 3) { survive = 0; }// Overpopulation
-					if (neighbors == 3) { survive = 1; } // Reproduction
-					if (survive == 1) {
-						GameMapNext[i][j] = 1; // Cell survives
-					}
-					else {
-						GameMapNext[i][j] = 0; // Cell dies
-					}
-				}
-			}
+			// Cellular Automata Logic
+			CellularAutomataRules();
 			// Apply Changes
 			swap(GameMap, GameMapNext); // Basically GameMap = GameMapNext; but Copilot says it's faster lol
 		}
