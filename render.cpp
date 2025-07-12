@@ -6,11 +6,11 @@
 using namespace std;
 int Toggle=0;
 int temp = 0;
-const SDL_FRect* rect[4];
+SDL_FRect rect;
 
 SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 	// Setup the Texture
-	SDL_Texture* cellTexture = SDL_CreateTexture(
+	SDL_Texture* Texture = SDL_CreateTexture(
 		renderer,
 		SDL_PIXELFORMAT_RGBA32,
 		SDL_TEXTUREACCESS_TARGET,
@@ -36,7 +36,7 @@ SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 	}
 	// Reset render target
 	SDL_SetRenderTarget(renderer, prevTarget);
-	return cellTexture;
+	return Texture;
 }
 
 void render(const std::vector<std::vector<int>>& GameMap) {
@@ -46,8 +46,8 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 	for (int i=0; i < GameWidth; i++) {
 		for (int j = 0; j < GameHeight; j++) {
 			if (GameMap[i][j] == 1) { 
-				rect[4] = {static_cast<float>(i), static_cast<float>(j), static_cast<float>(GameWidth), static_cast<float>(GameHeight)};
-				SDL_RenderTexture(renderer, cellTexture, nullptr, rect);
+				rect = { static_cast<float>(i), static_cast<float>(j), static_cast<float>(GameWidth), static_cast<float>(GameHeight)};
+				SDL_RenderTexture(renderer, cellTexture, nullptr, &rect);
 			}
 		}
 	}
