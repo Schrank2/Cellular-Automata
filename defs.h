@@ -13,6 +13,8 @@ extern int CameraZ;
 extern int GameScale;
 extern int GameWidth;
 extern int GameHeight;
+extern float ThreadUsage;
+extern int ThreadCount;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern SDL_Event event;
