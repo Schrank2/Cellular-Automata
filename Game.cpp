@@ -23,6 +23,11 @@ float mouseX, mouseY;
 int mouseXgame, mouseYgame;
 int GameWidth = ScreenWidth / GameScale;
 int GameHeight = ScreenHeight / GameScale;
+const int neighborOffsets[8][2] = {
+	{-1, -1}, {0, -1}, {1, -1},
+	{-1,  0},         {1,  0},
+	{-1,  1}, {0,  1}, {1,  1}
+};
 vector<vector<int>> GameMap(GameWidth, vector<int>(GameHeight));
 vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
 
@@ -57,18 +62,15 @@ int game() {
 					survive = 0; neighbors = 0;
 					if (GameMap[i][j] == 1) { survive = 1; }
 					// Determine Neighbors
-					//i+1
-					if (i + 1 < GameWidth && GameMap[i + 1][j] == 1) { neighbors++; } // ABOVE
-					if (i + 1 < GameWidth && j + 1 < GameHeight && GameMap[i + 1][j + 1] == 1) { neighbors++; } // ABOVE, RIGHT
-					if (i + 1 < GameWidth && j - 1 >= 0 && GameMap[i + 1][j - 1] == 1) { neighbors++; } // ABOVE, LEFT
-					// i
-					if (i - 1 >= 0 && GameMap[i - 1][j] == 1) { neighbors++; } // BELOW
-					if (i - 1 >= 0 && j + 1 < GameHeight && GameMap[i - 1][j + 1] == 1) { neighbors++; } // BELOW,RIGHT
-					if (i - 1 >= 0 && j - 1 >= 0 && GameMap[i - 1][j - 1] == 1) { neighbors++; } // BELOW,LEFT
-
-					if (j + 1 < GameHeight && GameMap[i][j + 1] == 1) { neighbors++; } // RIGHT
-					if (j - 1 >= 0 && GameMap[i][j - 1] == 1) { neighbors++; } // LEFT
-
+					for (int k = 0; k < 8; k++) {
+						int ni = i + neighborOffsets[k][0];
+						int nj = j + neighborOffsets[k][1];
+						if (ni >= 0 && ni < GameWidth && nj >= 0 && nj < GameHeight) {
+							if (GameMap[ni][nj] == 1) {
+								neighbors++;
+							}
+						}
+					}
 					if (neighbors < 2) { survive = 0; }// Underpopulation
 					if (neighbors > 3) { survive = 0; }// Overpopulation
 					if (neighbors == 3) { survive = 1; } // Reproduction
