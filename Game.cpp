@@ -30,10 +30,10 @@ const int neighborOffsets[8][2] = {
 };
 vector<vector<int>> GameMap(GameWidth, vector<int>(GameHeight));
 vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
-static void CellularAutomataRules() {
+static void CellularAutomataRules(int txMin,int txMax,int tyMin, int tyMax) {
 	// Cellular Automata do stuff now
-	for (int i = 0; i < GameWidth; i++) {
-		for (int j = 0; j < GameHeight; j++) {
+	for (int i = txMin; i < txMax; i++) {
+		for (int j = txMax; j < tyMin; j++) {
 			survive = 0; neighbors = 0;
 			if (GameMap[i][j] == 1) { survive = 1; }
 			// Determine Neighbors
@@ -86,7 +86,7 @@ int game() {
 		if (CurrentTime - LastTime >= TickTime && Pause == 0) {
 			LastTime = CurrentTime;
 			// Cellular Automata Logic
-			CellularAutomataRules();
+			CellularAutomataRules(0,GameWidth * 0.5, 0, GameHeight * 0.5);
 			// Apply Changes
 			swap(GameMap, GameMapNext); // Basically GameMap = GameMapNext; but Copilot says it's faster lol
 		}
