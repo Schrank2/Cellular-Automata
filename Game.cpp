@@ -14,7 +14,7 @@ int CameraY = 0;
 int CameraZ = 0;
 int neighbors = 0;
 int survive = 0;
-int GameScale = 8;
+int GameScale = 2;
 float mapDensity = 5.0f; // Percentage of cells that are alive at the start
 int GameTemp = 0;
 int TickTime = 0;
@@ -91,8 +91,7 @@ int game() {
 			if (event.button.button == SDL_BUTTON_LEFT) {
 				mouseXgame = mouseX / GameScale;
 				mouseYgame = mouseY / GameScale;
-				if (GameMap[mouseXgame][mouseYgame] == 1) { GameTemp = 0; }
-				if (GameMap[mouseXgame][mouseYgame] == 0) { GameTemp = 1; }
+				GameTemp = !GameTemp;
 				GameMap[mouseXgame][mouseYgame] = GameTemp;
 			}
 		}
