@@ -14,8 +14,8 @@ SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 		renderer,
 		SDL_PIXELFORMAT_RGBA32,
 		SDL_TEXTUREACCESS_TARGET,
-		GameScale + 1,
-		GameScale + 1
+		GameScale,
+		GameScale
 	);
 	// Check if successful
 	if (!cellTexture) {

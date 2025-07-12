@@ -5,6 +5,7 @@
 #include "defs.h"
 #include "functions.h"
 using namespace std;
+SDL_Texture* cellTexture;
 int StartTime;
 int CurrentTime;
 int LastTime;
