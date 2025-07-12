@@ -13,9 +13,7 @@ int LastTime;
 int CameraX = 0;
 int CameraY = 0;
 int CameraZ = 0;
-int neighbors = 0;
-int survive = 0;
-int GameScale = 2;
+int GameScale = 1;
 float mapDensity = 7.0f; // Percentage of cells that are alive at the start
 int GameTemp = 0;
 int TickTime = 0;
@@ -33,6 +31,7 @@ vector<vector<int>> GameMap(GameWidth, vector<int>(GameHeight));
 vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
 static void CellularAutomataRules(int txMin,int txMax,int tyMin, int tyMax) {
 	// Cellular Automata do stuff now
+	int survive; int neighbors;
 	for (int i = txMin; i < txMax; i++) {
 		for (int j = tyMin; j < tyMax; j++) {
 			survive = 0; neighbors = 0;
