@@ -4,9 +4,9 @@
 #include "defs.h"
 #include <thread>
 using namespace std;
-int ScreenHeight = 900;
-int ScreenWidth = 1600;
-float ThreadUsage = 0.5f; // Percentage of threads used
+int ScreenHeight = 960;
+int ScreenWidth = 1860;
+float ThreadUsage = 1.0f; // Percentage of threads used
 int ThreadCount = thread::hardware_concurrency();
 int ThreadCountUsed = ThreadCount * ThreadUsage; // Number of threads used
 SDL_Window* window;

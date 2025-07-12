@@ -90,6 +90,7 @@ int game() {
 			for (auto& row : GameMapNext)
 				fill(row.begin(), row.end(), 0);
 			// Cellular Automata Logic
+			threads.clear();
 			int rowLength = GameHeight / ThreadCountUsed;
 			for (int i = 0; i < ThreadCountUsed; i++) {
 				int yMin = i * rowLength;
