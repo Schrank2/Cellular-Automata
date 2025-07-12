@@ -7,7 +7,7 @@
 using namespace std;
 int Toggle=0;
 float temp = 0;
-vector<thread> threads;
+vector<thread> RenderThreads;
 
 SDL_Texture* genCellTexture() { // Lots of Help from Copilot
 	// Setup the Texture
@@ -61,19 +61,17 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 		std::cerr << "cellTexture is null!" << std::endl;
 		return;
 	}
-	SDL_FRect rect;
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer); // Clear the screen with white color
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	renderThreaded(GameMap,0,GameWidth*0.5,0,GameHeight*0.5);
 	// Rendering Multithreaded
-	threads.clear();
+	RenderThreads.clear();
 	int rowLength = GameHeight / ThreadCountUsed;
 	for (int i = 0; i < ThreadCountUsed; i++) {
 		int yMin = i * rowLength;
 		int yMax = (i + 1) * rowLength;
-		threads.emplace_back(renderThreaded, 0, GameWidth, yMin, yMax);
+		RenderThreads.emplace_back(renderThreaded, GameMap, 0, GameWidth,yMin, yMax);
 	}
-	for (auto& th : threads) { th.join(); };
+	for (auto& th : RenderThreads) { th.join(); };
 	SDL_RenderPresent(renderer);
 }
