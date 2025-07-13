@@ -13,7 +13,7 @@ int LastTime;
 int CameraX = 0;
 int CameraY = 0;
 int CameraZ = 0;
-int GameScale = 1;
+int GameScale = 4;
 float mapDensity = 7.0f; // Percentage of cells that are alive at the start
 int GameTemp = 0;
 int TickTime = 0;
