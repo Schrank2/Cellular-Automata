@@ -4,17 +4,15 @@
 #include "defs.h"
 #include <thread>
 using namespace std;
-int ScreenHeight = 960;
-int ScreenWidth = 1860;
-float ThreadUsage = 1.0; // Percentage of threads used
 int ThreadCount = thread::hardware_concurrency();
-int ThreadCountUsed = ThreadCount * ThreadUsage; // Number of threads used
+int ThreadCountUsed; // Number of threads used
 SDL_Window* window;
 SDL_Renderer* renderer;
 
 int main(int argc, char* argv[])
-readSettings();
 {
+	readSettings();
+	ThreadCountUsed = ThreadCount * ThreadCountUsage;
 	if (SDL_Init( SDL_INIT_VIDEO or SDL_INIT_AUDIO) < 0)
 	{
 		cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
