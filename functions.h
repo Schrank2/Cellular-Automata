@@ -1,4 +1,5 @@
 #include <vector>
+int readSettings();
 int main(int argc, char* argv[]);
 int game();
 void render(const std::vector<std::vector<int>>& GameMap);

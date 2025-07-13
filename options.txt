@@ -1,0 +1,5 @@
+GameScale = 16 // The Dimensions of each tile in pixels
+ScreenWidth = 1600 // The width of the game window in pixels
+ScreenHeight = 900 // The height of the game window in pixels
+ThreadCountUsage = 0.5 // The percentage of CPU threads to use for the game
+TickTime = 150 // Time between game ticks in milliseconds
