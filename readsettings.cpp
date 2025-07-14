@@ -19,17 +19,22 @@ int readSettings() {
 	// Read from the text file
 	ifstream MyReadFile("options.txt");
 	vector<string> lines;
-	vector<string> vars;
+	vector<string> linesDivided;
+	vector<vector<string>> settings;
 	string line;
 	while (getline(MyReadFile, line)) {
 		lines.push_back(line);
 	}
 	for (int i = 0; i < lines.size(); i++) {
-		getline(MyReadFile, line);
+		std::istringstream iss(lines[i]);  // create a string stream from the line
+		std::string key;
+		while (getline(iss, key, '=')) {
+			linesDivided.push_back(key);
+		}
 	}
 	// Close the file
 	MyReadFile.close();
-	for (const auto& l : lines) {
+	for (const auto& l : linesDivided) {
 		cout << l << endl;
 	}
 	return 1;
