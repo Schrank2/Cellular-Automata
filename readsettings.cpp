@@ -18,6 +18,7 @@ vector<string> readSettings() {
 	string line;
 	while (getline(MyReadFile, line)) {
 		lines.push_back(line);
+		cout << line << endl;
 	}
 	for (int i = 0; i < lines.size(); i++) {
 		istringstream iss(lines[i]);  // create a string stream from the line
@@ -34,9 +35,6 @@ vector<string> readSettings() {
 	}
 	// Close the file
 	MyReadFile.close();
-	for (const auto& l : settings) {
-		cout << l[0] << "///" << l[1] << endl;
-	}
 	for (int i = 0; i < settings.size(); i++) {
 		string key = settings[i][0];
 		string value = settings[i][1];

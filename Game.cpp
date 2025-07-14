@@ -87,7 +87,7 @@ int game() {
 			int rowLength = GameHeight / ThreadCountUsed;
 			for (int i = 0; i < ThreadCountUsed; i++) {
 				int yMin = i * rowLength;
-				int yMax = (i + 1) * rowLength;
+				int yMax = (i == ThreadCountUsed - 1) ? GameHeight : (i + 1) * rowLength; // the last thread takes the remaining rows
 				threads.emplace_back(CellularAutomataRules, 0, GameWidth, yMin, yMax);
 			}
 			for (auto& th : threads) { th.join(); };

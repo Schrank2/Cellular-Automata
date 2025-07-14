@@ -4,9 +4,9 @@ mapDensity=0.7
 # The Dimensions of each tile in pixels
 GameScale=16
 # The width of the game window in pixels
-ScreenWidth=1280 
+ScreenWidth=1600 
 # The height of the game window in pixels
-ScreenHeight=720
+ScreenHeight=900
 # The percentage of CPU threads to use for the game
 ThreadCountUsage=0.5
 # Time between game ticks in milliseconds

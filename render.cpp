@@ -78,7 +78,7 @@ void render(const std::vector<std::vector<int>>& GameMap) {
 	int rowLength = GameHeight / ThreadCountUsed;
 	for (int i = 0; i < ThreadCountUsed; i++) {
 		int yMin = i * rowLength;
-		int yMax = (i + 1) * rowLength;
+		int yMax = (i == ThreadCountUsed - 1) ? GameHeight : (i + 1) * rowLength; // the last thread takes the remaining rows
 		RenderThreads.emplace_back(renderThreaded, i,GameMap, 0, GameWidth,yMin, yMax);
 	}
 	for (auto& th : RenderThreads) { th.join(); }; // Wait for the Rectangles to be calculated
