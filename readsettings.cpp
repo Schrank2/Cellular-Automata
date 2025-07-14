@@ -5,15 +5,10 @@
 #include "functions.h"
 #include "defs.h"
 using namespace std;
-int GameScale; // The Dimensions of each tile in pixels
-float mapDensity; // The density of Cells in the beginning in 0.0 -> 1.0
-int ScreenWidth; // The width of the game window in pixels
-int ScreenHeight; // The height of the game window in pixels
-float ThreadCountUsage; // The percentage of CPU threads to use for the game
-int TickTime; // Time between game ticks in milliseconds
 // https://www.w3schools.com/cpp/cpp_files.asp
 
-int readSettings() {
+string readSettings() {
+	string Variables[6];
 	cout << endl << "Reading Settings from options.txt" << endl;
 	string settingsFile;
 	// Read from the text file
@@ -46,18 +41,18 @@ int readSettings() {
 		string key = settings[i][0];
 		string value = settings[i][1];
 		if (key== "GameScale") {
-			GameScale = stoi(value);
+			Variables[0] = stoi(value);
 		} else if (key == "mapDensity") {
-			mapDensity = stof(value);
+			Variables[1] = stof(value);
 		} else if (key == "ScreenWidth") {
-			ScreenWidth = stoi(value);
+			Variables[2] = stoi(value);
 		} else if (key == "ScreenHeight") {
-			ScreenHeight = stoi(value);
+			Variables[3] = stoi(value);
 		} else if (key == "ThreadCountUsage") {
-			ThreadCountUsage = stof(value);
+			Variables[4] = stof(value);
 		} else if (key == "TickTime") {
-			TickTime = stoi(settings[i][1]);
+			Variables[5] = stoi(settings[i][1]);
 		}
 	}
-	return 1;
+	return Variables;
 }
