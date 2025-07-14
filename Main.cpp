@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 using namespace std;
-vector<string> settings;
+std::vector<string> settings;
 int GameScale;
 float mapDensity;
 int ScreenWidth;
@@ -27,6 +27,9 @@ int main(int argc, char* argv[])
 {
 	// Declaring Globals based on the settings
 	vector<string> settings = readSettings();
+	for (const auto& setting : settings) {
+		cout << setting << endl; // Print each setting for debugging
+	}
 	GameScale = stoi(settings[0]); // The Dimensions of each tile in pixels
 	mapDensity = stof(settings[1]); // The density of Cells in the beginning in 0.0 -> 1.0
 	ScreenWidth = stoi(settings[2]); // The width of the game window in pixels

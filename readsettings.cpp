@@ -41,17 +41,17 @@ vector<string> readSettings() {
 		string key = settings[i][0];
 		string value = settings[i][1];
 		if (key== "GameScale") {
-			Variables[0] = stoi(value);
+			Variables[0] = value;
 		} else if (key == "mapDensity") {
-			Variables[1] = stof(value);
+			Variables[1] = value;
 		} else if (key == "ScreenWidth") {
-			Variables[2] = stoi(value);
+			Variables[2] = value;
 		} else if (key == "ScreenHeight") {
-			Variables[3] = stoi(value);
+			Variables[3] = value;
 		} else if (key == "ThreadCountUsage") {
-			Variables[4] = stof(value);
+			Variables[4] = value;
 		} else if (key == "TickTime") {
-			Variables[5] = stoi(settings[i][1]);
+			Variables[5] = value;
 		}
 	}
 	return Variables;

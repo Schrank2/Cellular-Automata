@@ -22,7 +22,7 @@ const int neighborOffsets[8][2] = {
 	{-1,  0},         {1,  0},
 	{-1,  1}, {0,  1}, {1,  1}
 };
-vector<thread> threads;
+std::vector<thread> threads;
 static void CellularAutomataRules(int txMin,int txMax,int tyMin, int tyMax) {
 	// Cellular Automata do stuff now
 	int survive; int neighbors;
