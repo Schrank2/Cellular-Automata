@@ -3,6 +3,8 @@
 #include "functions.h"
 #include "defs.h"
 #include <thread>
+#include <vector>
+#include <string>
 using namespace std;
 vector<string> settings;
 int GameScale;
@@ -17,6 +19,8 @@ int ThreadCount;
 int ThreadCountUsed; // Number of threads used
 SDL_Window* window;
 SDL_Renderer* renderer;
+vector<vector<int>> GameMap;
+vector<vector<int>> GameMapNext;
 // using pointers because weird
 
 int main(int argc, char* argv[])
@@ -34,8 +38,8 @@ int main(int argc, char* argv[])
 	ThreadCount = thread::hardware_concurrency();
 	ThreadCountUsed; // Number of threads used
 	ThreadCountUsed = ThreadCount * ThreadCountUsage;
-	vector<vector<int>>* GameMap = new vector<vector<int>>(GameWidth, vector<int>(GameHeight));
-	vector<vector<int>>* GameMapNext = new vector<vector<int>>(GameWidth, vector<int>(GameHeight));
+	GameMap.resize(GameWidth, vector<int>(GameHeight));
+	GameMapNext.resize(GameWidth, vector<int>(GameHeight));
 
 	if (SDL_Init( SDL_INIT_VIDEO or SDL_INIT_AUDIO) < 0)
 	{
