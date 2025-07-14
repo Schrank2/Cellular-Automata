@@ -68,7 +68,7 @@ int game() {
 	// Filling the Game Map with random values
 	for (int i = 0; i < GameWidth; i++) {
 		for (int j = 0; j < GameHeight; j++) {
-			if (rand() % 10 > mapDensity) {
+			if (rand() % 10 > mapDensity*10) {
 				GameMap[i][j] = 1;
 			}
 			else {
@@ -106,8 +106,9 @@ int game() {
 			if (event.button.button == SDL_BUTTON_LEFT) {
 				mouseXgame = mouseX / GameScale;
 				mouseYgame = mouseY / GameScale;
-				GameTemp = !GameTemp;
-				GameMap[mouseXgame][mouseYgame] = GameTemp;
+				if (mouseXgame >= 0 && mouseXgame < GameWidth && mouseYgame >= 0 && mouseYgame < GameHeight) {
+					GameMap[mouseXgame][mouseYgame] = !GameMap[mouseXgame][mouseYgame];
+				}
 			}
 		}
 		if (event.type == SDL_EVENT_KEY_DOWN) {
