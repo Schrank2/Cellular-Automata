@@ -16,6 +16,8 @@ extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern SDL_Event event;
 extern SDL_Texture* cellTexture;
+vector<vector<int>>* GameMap;
+vector<vector<int>>* GameMapNext;
 // Settings
 extern int GameScale; // The Dimensions of each tile in pixels
 extern float mapDensity; // The density of Cells in the beginning in 0.0 -> 1.0

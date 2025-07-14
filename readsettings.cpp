@@ -7,8 +7,8 @@
 using namespace std;
 // https://www.w3schools.com/cpp/cpp_files.asp
 
-string readSettings() {
-	string Variables[6];
+vector<string> readSettings() {
+	std::vector<std::string> Variables(6);
 	cout << endl << "Reading Settings from options.txt" << endl;
 	string settingsFile;
 	// Read from the text file

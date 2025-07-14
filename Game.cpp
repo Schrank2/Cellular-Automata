@@ -17,8 +17,6 @@ int GameTemp = 0;
 int Pause = 0;
 float mouseX, mouseY;
 int mouseXgame, mouseYgame;
-vector<vector<int>> GameMap(GameWidth, vector<int>(GameHeight));
-vector<vector<int>> GameMapNext(GameWidth, vector<int>(GameHeight));
 const int neighborOffsets[8][2] = {
 	{-1, -1}, {0, -1}, {1, -1},
 	{-1,  0},         {1,  0},
@@ -63,8 +61,6 @@ int game() {
 	int StartTime = SDL_GetTicks();
 	int CurrentTime = SDL_GetTicks() - StartTime;
 	int LastTime = CurrentTime;
-	int GameWidth = ScreenWidth / GameScale;
-	int GameHeight = ScreenHeight / GameScale;
 	// Filling the Game Map with random values
 	for (int i = 0; i < GameWidth; i++) {
 		for (int j = 0; j < GameHeight; j++) {
