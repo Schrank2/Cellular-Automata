@@ -18,8 +18,6 @@ int ThreadCountUsed; // Number of threads used
 SDL_Window* window;
 SDL_Renderer* renderer;
 // using pointers because weird
-vector<vector<int>>* GameMap;
-vector<vector<int>>* GameMapNext;
 
 int main(int argc, char* argv[])
 {
@@ -36,8 +34,8 @@ int main(int argc, char* argv[])
 	ThreadCount = thread::hardware_concurrency();
 	ThreadCountUsed; // Number of threads used
 	ThreadCountUsed = ThreadCount * ThreadCountUsage;
-	GameMap = new vector<vector<int>>(GameWidth, vector<int>(GameHeight));
-	GameMapNext = new vector<vector<int>>(GameWidth, vector<int>(GameHeight));
+	vector<vector<int>>* GameMap = new vector<vector<int>>(GameWidth, vector<int>(GameHeight));
+	vector<vector<int>>* GameMapNext = new vector<vector<int>>(GameWidth, vector<int>(GameHeight));
 
 	if (SDL_Init( SDL_INIT_VIDEO or SDL_INIT_AUDIO) < 0)
 	{
