@@ -16,11 +16,13 @@ vector<string> readSettings() {
 	vector<string> lines;
 	vector<vector<string>> settings;
 	string line;
+	// Print the file content to the console
 	while (getline(MyReadFile, line)) {
 		lines.push_back(line);
 		cout << line << endl;
 	}
 	cout << endl;
+	// Interpret the lines
 	for (int i = 0; i < lines.size(); i++) {
 		istringstream iss(lines[i]);  // create a string stream from the line
 		string key;
