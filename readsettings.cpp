@@ -20,6 +20,7 @@ vector<string> readSettings() {
 		lines.push_back(line);
 		cout << line << endl;
 	}
+	cout << endl;
 	for (int i = 0; i < lines.size(); i++) {
 		istringstream iss(lines[i]);  // create a string stream from the line
 		string key;
